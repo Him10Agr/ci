@@ -1,0 +1,40 @@
+# .github/workflows/ci.yaml
+
+name: CI PIPELINE
+
+on:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    - uses: iterative/setup-cml@v2
+    - name: Install Dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run main file
+      run: |
+        python3 main.py
+    - name: Run Tests
+      run: |
+        python3 -m unittest discover
+
+    - name: Create CML Report
+      env:
+        REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+
+        echo "# First line of out report" >> report.md
+        echo "## Bar Plots" >> report.md
+        echo '![](./bars.png"Bar plot")' >> report.md
+        echo "## Line Plots" >> report.md
+        echo '![](./lines.png"Line plot")' >> report.md
+
+        cml comment create report.md
