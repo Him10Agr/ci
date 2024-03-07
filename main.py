@@ -8,8 +8,9 @@ plt.bar(keys, values)
 plt.savefig('bars.png')
 plt.close()
 
-x = list(random.randrange(10))
-y = list(random.randrange(10))
+x = list(range(10))
+y = [random.randrange(10) * i for i in x]
 plt.plot(x, y)
 plt.savefig('lines.png')
 plt.close()
+
